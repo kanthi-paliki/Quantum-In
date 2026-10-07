@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>QuantumInspect</title>
+</head>
+
+<body>
+
+    <h1>QuantumInspect</h1>
+
+    <p>Enter the four image features:</p>
+
+    <input id="mean" placeholder="Mean intensity">
+    <br><br>
+
+    <input id="std" placeholder="Standard deviation">
+    <br><br>
+
+    <input id="edge_density" placeholder="Edge density">
+    <br><br>
+
+    <input id="texture" placeholder="Texture">
+    <br><br>
+
+    <button onclick="predict()">Predict</button>
+
+    <h2 id="result"></h2>
+
+
+    <script>
+
+        async function predict() {
+
+            const mean = document.getElementById("mean").value;
+            const std = document.getElementById("std").value;
+            const edge_density = document.getElementById("edge_density").value;
+            const texture = document.getElementById("texture").value;
+
+            const response = await fetch("/predict", {
+
+                method: "POST",
+
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify({
+                    mean: mean,
+                    std: std,
+                    edge_density: edge_density,
+                    texture: texture
+                })
+
+            });
+
+            const data = await response.json();
+
+            document.getElementById("result").innerText =
+                "Prediction: " + data.prediction;
+        }
+
+    </script>
+
+</body>
+
+</html>
